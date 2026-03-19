@@ -5,6 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "geminiocr"
 version = "0.1.0"
+authors = [
+    { name = "Milos Vujasinovic", email = "contact@mvujas.com" }
+]
 description = "General-purpose batch OCR via Google Gemini API with context caching"
 requires-python = ">=3.11"
 dependencies = [
