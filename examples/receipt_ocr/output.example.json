@@ -1,0 +1,11 @@
+{
+  "receipt": {
+    "cafe_name": "THE RUSTIC BEAN COFFEE",
+    "address": "1248 Oak St, Portland, OR",
+    "blueberry_muffin_cost": 4.25,
+    "avocado_toast_cost": 11.0,
+    "lg_oat_latte_cost": 6.5,
+    "time_of_the_day": "14:22",
+    "total_usd_cost": 39.33
+  }
+}

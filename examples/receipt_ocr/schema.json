@@ -1,0 +1,13 @@
+{
+  "type": "OBJECT",
+  "properties": {
+    "cafe_name": { "type": "STRING" },
+    "address": { "type": "STRING" },
+    "blueberry_muffin_cost": { "type": "NUMBER" },
+    "avocado_toast_cost": { "type": "NUMBER" },
+    "lg_oat_latte_cost": { "type": "NUMBER" },
+    "time_of_the_day": { "type": "STRING" },
+    "total_usd_cost": { "type": "NUMBER" }
+  },
+  "required": ["total_usd_cost"]
+}

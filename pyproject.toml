@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "geminiocr"
+version = "0.1.0"
+description = "General-purpose batch OCR via Google Gemini API with context caching"
+requires-python = ">=3.11"
+dependencies = [
+    "google-genai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "tqdm>=4.60.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+geminiocr = "geminiocr.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/geminiocr"]

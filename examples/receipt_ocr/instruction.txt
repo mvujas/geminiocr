@@ -1,0 +1,5 @@
+Extract item costs and metadata from the provided receipt/bill images.
+Return ONLY valid JSON. Match item names to the schema fields.
+Use the per-unit cost for individual items, not the line total.
+If an item is not found on the receipt, return null for that field.
+For time_of_the_day, use the format "HH:MM" as printed on the receipt.
