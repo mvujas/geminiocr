@@ -6,16 +6,27 @@ from geminiocr import Settings, OCRSession
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Load instruction and schema from files
-with open(os.path.join(SCRIPT_DIR, "instruction.txt")) as f:
-    system_instruction = f.read()
-
-with open(os.path.join(SCRIPT_DIR, "schema.json")) as f:
-    response_schema = json.load(f)
-
 session = OCRSession(Settings(
-    system_instruction=system_instruction,
-    response_schema=response_schema,
+    system_instruction=(
+        "Extract item costs and metadata from the provided receipt/bill images.\n"
+        "Return ONLY valid JSON. Match item names to the schema fields.\n"
+        "Use the per-unit cost for individual items, not the line total.\n"
+        "If an item is not found on the receipt, return null for that field.\n"
+        'For time_of_the_day, use the format "HH:MM" as printed on the receipt.'
+    ),
+    response_schema={
+        "type": "OBJECT",
+        "properties": {
+            "cafe_name": {"type": "STRING"},
+            "address": {"type": "STRING"},
+            "blueberry_muffin_cost": {"type": "NUMBER"},
+            "avocado_toast_cost": {"type": "NUMBER"},
+            "lg_oat_latte_cost": {"type": "NUMBER"},
+            "time_of_the_day": {"type": "STRING"},
+            "total_usd_cost": {"type": "NUMBER"},
+        },
+        "required": ["total_usd_cost"],
+    },
 ))
 
 # --- Single receipt ---
