@@ -25,8 +25,8 @@ class Settings:
     model: str = field(
         default_factory=lambda: os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
     )
-    cache_ttl: str = field(
-        default_factory=lambda: os.environ.get("GEMINI_CACHE_TTL", "3600s")
+    cache_ttl: str | None = field(
+        default_factory=lambda: os.environ.get("GEMINI_CACHE_TTL", "3600s") or None
     )
     system_instruction: str = ""
     response_schema: dict[str, Any] | None = None

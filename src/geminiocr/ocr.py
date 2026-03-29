@@ -84,16 +84,19 @@ class OCRSession:
             except Exception as exc:
                 return {gid: exc}
 
-        # Multiple groups: use cache to save cost
-        self._ensure_cache()
+        # Multiple groups: use cache to save cost (unless disabled)
+        use_cache = self.settings.cache_ttl is not None
+        if use_cache:
+            self._ensure_cache()
         total_images = sum(len(v) for v in groups.values())
         logger.info(
-            "Starting batch: %d groups, %d total images", len(groups), total_images
+            "Starting batch: %d groups, %d total images (cache=%s)",
+            len(groups), total_images, use_cache,
         )
 
         results: dict[str, dict | Exception] = {}
         try:
-            asyncio.run(self._process_batch_async(groups, results))
+            asyncio.run(self._process_batch_async(groups, results, use_cache=use_cache))
         except (KeyboardInterrupt, Exception) as exc:
             succeeded = sum(1 for v in results.values() if not isinstance(v, Exception))
             logger.warning(
@@ -107,7 +110,7 @@ class OCRSession:
 
     # -- Internals --
 
-    async def _process_batch_async(self, groups, results):
+    async def _process_batch_async(self, groups, results, use_cache: bool = True):
         semaphore = asyncio.Semaphore(self.settings.concurrency)
         progress = tqdm(total=len(groups), desc="Processing", unit="group")
 
@@ -116,7 +119,7 @@ class OCRSession:
                 loop = asyncio.get_event_loop()
                 try:
                     result = await loop.run_in_executor(
-                        None, self.process_group, gid, paths, True
+                        None, self.process_group, gid, paths, use_cache
                     )
                     results[gid] = result
                 except Exception as exc:
